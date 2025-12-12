@@ -1,6 +1,6 @@
 """
-Network Anomaly Detection - Complete Implementation
-All-in-one Python script for your CSC networking final project
+Network Anomaly Detection
+CSC 441 final project
 Author: Samuel Knowles and Matthew Uttecht
 """
 
@@ -103,7 +103,6 @@ class DataProcessor:
         print(f"X_train shape: {self.X_train.shape}")
         print(f"X_test shape: {self.X_test.shape}")
         
-        # Apply SMOTE if requested
         if apply_smote:
             smote = SMOTE(random_state=42, k_neighbors=3)
             self.X_train, self.y_train = smote.fit_resample(self.X_train, self.y_train)
@@ -487,21 +486,21 @@ class HyperparameterTuner:
         
         return grid.best_estimator_
 
+def print_header(title):
+    print("=" * 60)
+    print(title)
+    print("=" * 60)
 
 # ============================================================================
 # PHASE 5: MAIN EXECUTION
 # ============================================================================
 
 def main():
-    print("=" * 60)
-    print("NETWORK ANOMALY DETECTION - FINAL PROJECT")
-    print("CSC Networking - Samuel Knowles & Matthew Uttecht")
-    print("=" * 60)
+    print_header("NETWORK ANOMALY DETECTION - FINAL PROJECT\n" \
+    "CSC 441 Networking - Samuel Knowles & Matthew Uttecht")
     
     # Phase 1: Data Processing
-    print("\n" + "=" * 60)
-    print("DATA LOADING AND PREPROCESSING")
-    print("=" * 60)
+    print_header("DATA LOADING AND PREPROCESSING")
     processor = DataProcessor('raw_data/Training_data.csv', 'raw_data/Testing_data.csv')
     processor.explore()
     X_train, X_test, y_train, y_test = processor.preprocess(apply_smote=False)
@@ -509,14 +508,14 @@ def main():
     
     # Phase 2: Feature Engineering
     print("\n" + "=" * 60)
-    print("FEATURE ENGINEERING")
+    print_header("FEATURE ENGINEERING")
     print("=" * 60)
     engineer = FeatureEngineer(X_train, y_train)
     engineer.analyze_importance_rf(n_features=20)
     
     # Phase 3: Model Training and Evaluation
     print("\n" + "=" * 60)
-    print("MODEL TRAINING AND EVALUATION")
+    print_header("MODEL TRAINING AND EVALUATION")
     print("=" * 60)
     trainer = ModelTrainer(X_train, X_test, y_train, y_test)
     trainer.train_all()
@@ -524,7 +523,7 @@ def main():
     
     # Generate Visuals
     print("\n" + "=" * 60)
-    print("GENERATING VISUALS")
+    print_header("GENERATING VISUALS")
     print("=" * 60)
     trainer.plot_comparison()
     trainer.plot_confusion_matrices()
@@ -539,7 +538,7 @@ def main():
     
     # Phase 4: Hyperparameter Tuning
     print("\n" + "=" * 60)
-    print("HYPERPARAMETER TUNING")
+    print_header("HYPERPARAMETER TUNING")
     print("=" * 60)
     tuner = HyperparameterTuner(X_train, y_train)
     tuned_dt = tuner.tune_decision_tree()
