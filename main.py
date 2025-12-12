@@ -507,24 +507,18 @@ def main():
     processor.save_preprocessed_data(csv_prefix='processed_data/', model_prefix='models/')
     
     # Phase 2: Feature Engineering
-    print("\n" + "=" * 60)
     print_header("FEATURE ENGINEERING")
-    print("=" * 60)
     engineer = FeatureEngineer(X_train, y_train)
     engineer.analyze_importance_rf(n_features=20)
     
     # Phase 3: Model Training and Evaluation
-    print("\n" + "=" * 60)
     print_header("MODEL TRAINING AND EVALUATION")
-    print("=" * 60)
     trainer = ModelTrainer(X_train, X_test, y_train, y_test)
     trainer.train_all()
     trainer.evaluate_all()
     
     # Generate Visuals
-    print("\n" + "=" * 60)
     print_header("GENERATING VISUALS")
-    print("=" * 60)
     trainer.plot_comparison()
     trainer.plot_confusion_matrices()
     trainer.plot_roc_curves()
@@ -537,12 +531,12 @@ def main():
     trainer.save_best_model()
     
     # Phase 4: Hyperparameter Tuning
-    print("\n" + "=" * 60)
-    print_header("HYPERPARAMETER TUNING")
-    print("=" * 60)
-    tuner = HyperparameterTuner(X_train, y_train)
-    tuned_dt = tuner.tune_decision_tree()
-    tuned_rf = tuner.tune_random_forest()
+    tuning = input("Hyperparameter Tuning on Tree Models? (y/n): ")
+    if(tuning == 'y' or tuning == 'Y'):
+        print_header("HYPERPARAMETER TUNING")
+        tuner = HyperparameterTuner(X_train, y_train)
+        tuned_dt = tuner.tune_decision_tree()
+        tuned_rf = tuner.tune_random_forest()
 
 
 if __name__ == "__main__":
